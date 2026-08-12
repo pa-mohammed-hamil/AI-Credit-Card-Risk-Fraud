@@ -1,0 +1,29 @@
+{
+  "credit": {
+    "accuracy": 0.7625,
+    "precision": 0.7603,
+    "recall": 0.7667,
+    "f1": 0.7635,
+    "roc_auc": 0.8399
+  },
+  "fraud": {
+    "accuracy": 0.9031,
+    "precision": 0.7174,
+    "recall": 0.6471,
+    "f1": 0.6804,
+    "roc_auc": 0.9453
+  },
+  "message": {
+    "accuracy": 1.0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0,
+    "roc_auc": 1.0
+  },
+  "training_rows": {
+    "credit": 1200,
+    "fraud": 1600,
+    "message": 300
+  },
+  "version": "1.0.0"
+}
