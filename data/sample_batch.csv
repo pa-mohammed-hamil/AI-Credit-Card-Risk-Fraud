@@ -1,0 +1,4 @@
+age,income,credit_score,employment_years,debt,credit_limit,previous_defaults,utilization,payment_history
+32,65000,710,6,12000,35000,0,0.25,92
+51,42000,570,4,30000,18000,2,0.85,61
+27,90000,760,5,7000,60000,0,0.15,98
