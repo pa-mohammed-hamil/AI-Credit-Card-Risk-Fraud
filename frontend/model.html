@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Models | CreditGuard AI</title>
+<link rel="stylesheet" href="static/css/main.css">
+</head><body>
+
+<nav class="navbar">
+  <div class="nav-container">
+    <a class="brand" href="/">
+      <span class="brand-icon">🛡️</span>
+      <span>CreditGuard AI</span>
+    </a>
+    <div class="nav-menu">
+      <a href="dashboard.html" data-page="dashboard">Dashboard</a>
+      <a href="predict.html" data-page="predict">Credit Risk</a>
+      <a href="fraud.html" data-page="fraud">Fraud</a>
+      <a href="message.html" data-page="message">Messages</a>
+      <a href="batch.html" data-page="batch">Batch</a>
+      <a href="analytics.html" data-page="analytics">Analytics</a>
+      <a href="model.html" data-page="model">Model</a>
+    </div>
+  </div>
+</nav>
+<script>
+document.querySelectorAll('.nav-menu a').forEach(a => {
+  if (location.pathname.includes(a.dataset.page)) a.classList.add('active');
+});
+</script>
+
+<main class="container">
+<h1>⚙️ Model Information</h1>
+<p class="stat-label">Live evaluation metrics from the locally trained demo models.</p>
+<div id="metrics" class="grid three"><div class="card">Loading model metrics...</div></div>
+</main>
+<footer class="footer">CreditGuard AI • AI Credit Card Risk & Fraud Detection • Demo platform</footer>
+
+<script>
+fetch("/api/model-metrics").then(r=>r.json()).then(d=>{
+ const box=document.getElementById("metrics");
+ box.innerHTML=["credit","fraud","message"].map(k=>{const m=d[k];return `<div class="card"><h3>${k==="credit"?"💳 Credit Risk":k==="fraud"?"🛡️ Fraud":"📩 Message NLP"}</h3><p>Accuracy <b>${(m.accuracy*100).toFixed(1)}%</b></p><p>Precision <b>${(m.precision*100).toFixed(1)}%</b></p><p>Recall <b>${(m.recall*100).toFixed(1)}%</b></p><p>F1 <b>${(m.f1*100).toFixed(1)}%</b></p><p>ROC-AUC <b>${(m.roc_auc*100).toFixed(1)}%</b></p></div>`}).join("");
+}).catch(()=>document.getElementById("metrics").innerHTML="<div class='alert high'>Could not load metrics.</div>");
+</script>
+
+</body></html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Credit Risk | CreditGuard AI</title>
+<link rel="stylesheet" href="static/css/main.css">
+</head><body>
+
+<nav class="navbar">
+  <div class="nav-container">
+    <a class="brand" href="/">
+      <span class="brand-icon">🛡️</span>
+      <span>CreditGuard AI</span>
+    </a>
+    <div class="nav-menu">
+      <a href="dashboard.html" data-page="dashboard">Dashboard</a>
+      <a href="predict.html" data-page="predict">Credit Risk</a>
+      <a href="fraud.html" data-page="fraud">Fraud</a>
+      <a href="message.html" data-page="message">Messages</a>
+      <a href="batch.html" data-page="batch">Batch</a>
+      <a href="analytics.html" data-page="analytics">Analytics</a>
+      <a href="model.html" data-page="model">Model</a>
+    </div>
+  </div>
+</nav>
+<script>
+document.querySelectorAll('.nav-menu a').forEach(a => {
+  if (location.pathname.includes(a.dataset.page)) a.classList.add('active');
+});
+</script>
+
+<main class="container">
+<h1>💳 Credit Card Risk Prediction</h1>
+<p class="stat-label">Enter applicant information to estimate default probability.</p>
+<div class="card">
+<form id="creditForm" class="form-grid">
+  <div><label>Age<input name="age" type="number" value="32" required></label></div>
+  <div><label>Annual Income<input name="income" type="number" value="65000" required></label></div>
+  <div><label>Credit Score<input name="credit_score" type="number" value="710" min="300" max="850" required></label></div>
+  <div><label>Employment Years<input name="employment_years" type="number" value="6" required></label></div>
+  <div><label>Debt<input name="debt" type="number" value="12000" required></label></div>
+  <div><label>Credit Limit<input name="credit_limit" type="number" value="35000" required></label></div>
+  <div><label>Previous Defaults<input name="previous_defaults" type="number" value="0" min="0" required></label></div>
+  <div><label>Utilization (0-1)<input name="utilization" type="number" value="0.25" min="0" max="1" step="0.01" required></label></div>
+  <div><label>Payment History %<input name="payment_history" type="number" value="92" min="0" max="100" required></label></div>
+  <div style="display:flex;align-items:end"><button class="btn" type="submit">Analyze Risk</button></div>
+</form>
+<div id="result" class="result"></div>
+</div>
+</main>
+<footer class="footer">CreditGuard AI • AI Credit Card Risk & Fraud Detection • Demo platform</footer>
+
+<script>
+const form=document.getElementById("creditForm"), result=document.getElementById("result");
+form.addEventListener("submit", async e=>{
+ e.preventDefault();
+ const data=Object.fromEntries(new FormData(form).entries());
+ ["age","income","credit_score","employment_years","debt","credit_limit","previous_defaults","utilization","payment_history"].forEach(k=>data[k]=Number(data[k]));
+ result.className="result show"; result.innerHTML="<div class='card'>Analyzing...</div>";
+ try{
+  const r=await fetch("/api/predict-credit",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(data)});
+  const d=await r.json(); if(!r.ok) throw new Error(d.detail||"Prediction failed");
+  const cls=d.risk.toLowerCase();
+  result.innerHTML=`<div class="card"><div class="stat-label">CREDIT RISK</div><div class="result-score ${cls}">${d.default_probability}%</div><h2 class="${cls}">${d.risk} RISK</h2><div class="alert">${d.recommendation}</div></div>`;
+ }catch(err){result.innerHTML=`<div class="alert high">${err.message}</div>`}
+});
+</script>
+
+</body></html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Dashboard | CreditGuard AI</title>
+<link rel="stylesheet" href="static/css/main.css">
+</head><body>
+
+<nav class="navbar">
+  <div class="nav-container">
+    <a class="brand" href="/">
+      <span class="brand-icon">🛡️</span>
+      <span>CreditGuard AI</span>
+    </a>
+    <div class="nav-menu">
+      <a href="dashboard.html" data-page="dashboard">Dashboard</a>
+      <a href="predict.html" data-page="predict">Credit Risk</a>
+      <a href="fraud.html" data-page="fraud">Fraud</a>
+      <a href="message.html" data-page="message">Messages</a>
+      <a href="batch.html" data-page="batch">Batch</a>
+      <a href="analytics.html" data-page="analytics">Analytics</a>
+      <a href="model.html" data-page="model">Model</a>
+    </div>
+  </div>
+</nav>
+<script>
+document.querySelectorAll('.nav-menu a').forEach(a => {
+  if (location.pathname.includes(a.dataset.page)) a.classList.add('active');
+});
+</script>
+
+<main class="container">
+<section class="hero">
+  <div>
+    <span class="badge">AI FINANCIAL INTELLIGENCE</span>
+    <h1>Credit Card Risk & Fraud Detection</h1>
+    <p>One platform for credit-risk scoring, transaction fraud analysis, suspicious-message detection and batch processing.</p>
+    <div class="actions">
+      <a class="btn" href="/predict.html">💳 Start Risk Assessment</a>
+      <a class="btn secondary" href="/message.html">📩 Check a Message</a>
+    </div>
+  </div>
+</section>
+<div class="grid stats">
+  <div class="card"><div class="stat-label">Total Applications</div><div class="stat-value">12,450</div><div class="stat-note">↑ 12% this month</div></div>
+  <div class="card"><div class="stat-label">Approval Rate</div><div class="stat-value">78.4%</div><div class="stat-note">↑ 5% this month</div></div>
+  <div class="card"><div class="stat-label">Default Rate</div><div class="stat-value">8.2%</div><div class="stat-note">↓ 3% this month</div></div>
+  <div class="card"><div class="stat-label">Fraud Rate</div><div class="stat-value">2.1%</div><div class="stat-note">↓ 8% this month</div></div>
+</div>
+<h2 class="section-title">Risk Distribution</h2>
+<div class="grid three">
+  <div class="card"><div class="stat-label low">LOW RISK</div><div class="stat-value">61%</div><div class="stat-note">7,594 applications</div></div>
+  <div class="card"><div class="stat-label medium">MEDIUM RISK</div><div class="stat-value">27%</div><div class="stat-note">3,362 applications</div></div>
+  <div class="card"><div class="stat-label high">HIGH RISK</div><div class="stat-value">12%</div><div class="stat-note">1,494 applications</div></div>
+</div>
+<h2 class="section-title">Recent Alerts</h2>
+<div class="grid two">
+  <div class="card"><b>🚨 Fraud Alert</b><p class="stat-label">High-risk transaction detected from a new device.</p></div>
+  <div class="card"><b>📩 Message Alert</b><p class="stat-label">Potential phishing wording detected in a bank message.</p></div>
+  <div class="card"><b>⚠️ Manual Review</b><p class="stat-label">Credit application crossed the medium-risk threshold.</p></div>
+  <div class="card"><b>✅ Batch Complete</b><p class="stat-label">150 credit applications processed successfully.</p></div>
+</div>
+</main>
+<footer class="footer">CreditGuard AI • AI Credit Card Risk & Fraud Detection • Demo platform</footer>
+
+</body></html>

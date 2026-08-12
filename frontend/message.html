@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Message Detection | CreditGuard AI</title>
+<link rel="stylesheet" href="static/css/main.css">
+</head><body>
+
+<nav class="navbar">
+  <div class="nav-container">
+    <a class="brand" href="/">
+      <span class="brand-icon">🛡️</span>
+      <span>CreditGuard AI</span>
+    </a>
+    <div class="nav-menu">
+      <a href="dashboard.html" data-page="dashboard">Dashboard</a>
+      <a href="predict.html" data-page="predict">Credit Risk</a>
+      <a href="fraud.html" data-page="fraud">Fraud</a>
+      <a href="message.html" data-page="message">Messages</a>
+      <a href="batch.html" data-page="batch">Batch</a>
+      <a href="analytics.html" data-page="analytics">Analytics</a>
+      <a href="model.html" data-page="model">Model</a>
+    </div>
+  </div>
+</nav>
+<script>
+document.querySelectorAll('.nav-menu a').forEach(a => {
+  if (location.pathname.includes(a.dataset.page)) a.classList.add('active');
+});
+</script>
+
+<main class="container">
+<h1>📩 Bank & Credit Message Detection</h1>
+<p class="stat-label">Classify SMS/email-style financial messages as legitimate, suspicious or potential phishing.</p>
+<div class="card">
+<textarea id="message" placeholder="Paste a bank or credit card message here..."></textarea>
+<div class="actions"><button class="btn" id="scan">🔍 Analyze Message</button></div>
+<div id="messageResult" class="result"></div>
+</div>
+</main>
+<footer class="footer">CreditGuard AI • AI Credit Card Risk & Fraud Detection • Demo platform</footer>
+
+<script>
+document.getElementById("scan").onclick=async()=>{
+ const message=document.getElementById("message").value.trim(), box=document.getElementById("messageResult");
+ if(!message){box.className="result show";box.innerHTML="<div class='alert'>Enter a message first.</div>";return;}
+ box.className="result show";box.innerHTML="<div class='card'>Analyzing message...</div>";
+ try{const r=await fetch("/api/detect-message",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({message})});const d=await r.json();if(!r.ok)throw Error(d.detail);
+ const cls=d.risk_score>=70?"high":d.risk_score>=30?"medium":"low";
+ box.innerHTML=`<div class="card"><div class="stat-label">CLASSIFICATION</div><h2 class="${cls}">${d.classification}</h2><div class="result-score ${cls}">${d.risk_score}%</div><p>${d.type}</p><div class="alert">${d.recommendation}</div></div>`;
+ }catch(err){box.innerHTML=`<div class="alert high">${err.message}</div>`}
+};
+</script>
+
+</body></html>

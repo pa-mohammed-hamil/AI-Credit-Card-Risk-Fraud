@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Batch Prediction | CreditGuard AI</title>
+<link rel="stylesheet" href="static/css/main.css">
+</head><body>
+
+<nav class="navbar">
+  <div class="nav-container">
+    <a class="brand" href="/">
+      <span class="brand-icon">🛡️</span>
+      <span>CreditGuard AI</span>
+    </a>
+    <div class="nav-menu">
+      <a href=/dashboard.html" data-page="dashboard">Dashboard</a>
+      <a href="predict.html" data-page="predict">Credit Risk</a>
+      <a href="fraud.html" data-page="fraud">Fraud</a>
+      <a href="message.html" data-page="message">Messages</a>
+      <a href="batch.html" data-page="batch">Batch</a>
+      <a href="analytics.html" data-page="analytics">Analytics</a>
+      <a href="model.html" data-page="model">Model</a>
+    </div>
+  </div>
+</nav>
+<script>
+document.querySelectorAll('.nav-menu a').forEach(a => {
+  if (location.pathname.includes(a.dataset.page)) a.classList.add('active');
+});
+</script>
+
+<main class="container">
+<h1>📁 Batch Credit Risk Prediction</h1>
+<p class="stat-label">Upload a CSV/XLSX containing the required credit-risk columns.</p>
+<div class="card">
+<div class="dropzone">
+  <p>Required: age, income, credit_score, employment_years, debt, credit_limit, previous_defaults, utilization, payment_history</p>
+  <input id="file" type="file" accept=".csv,.xlsx,.xls">
+  <div class="actions" style="justify-content:center"><button class="btn" id="upload">Process File</button></div>
+</div>
+<div id="batchResult" class="result"></div>
+</div>
+</main>
+<footer class="footer">CreditGuard AI • AI Credit Card Risk & Fraud Detection • Demo platform</footer>
+
+<script>
+document.getElementById("upload").onclick=async()=>{
+ const file=document.getElementById("file").files[0], box=document.getElementById("batchResult");
+ if(!file){box.className="result show";box.innerHTML="<div class='alert'>Choose a CSV or Excel file.</div>";return;}
+ box.className="result show";box.innerHTML="<div class='card'>Processing...</div>";
+ const fd=new FormData();fd.append("file",file);
+ try{const r=await fetch("/api/batch-predict",{method:"POST",body:fd});if(!r.ok){const d=await r.json();throw Error(d.detail||"Batch failed");}
+ const blob=await r.blob(), url=URL.createObjectURL(blob), a=document.createElement("a");a.href=url;a.download="credit_risk_results.csv";a.click();URL.revokeObjectURL(url);
+ box.innerHTML="<div class='alert low'>✓ Processing complete. Results downloaded.</div>";
+ }catch(err){box.innerHTML=`<div class="alert high">${err.message}</div>`}
+};
+</script>
+
+</body></html>
